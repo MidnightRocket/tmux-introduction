@@ -1,0 +1,86 @@
+#!/bin/sh
+set -eu
+SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"; readonly SCRIPT_DIR;
+print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
+stderr() { print "$@" 1>&2; }
+reportError() { stderr "$2"; return "$1"; }
+verbosePrint() { { test -n "${VERBOSE_MODE+x}" && stderr "$@"; } || true; }
+
+commandv() { command -v "$1" || reportError "$?" "Executable '$1' not found"; }
+
+
+help() {
+	cat <<-EOF
+	usage: demo DIRECTORY
+	Run a demo setup of tmux where DIRECTORY contains at least:
+	 - tmux.conf file either empty or with valid tmux configuration. See tmux(1).
+	 - setup file with execution permission set. This file will be executed with \$TMUX variable set. 
+	EOF
+}
+
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		-h | --help)
+			help # Define help function
+			exit 0
+			;;
+		*)
+			EXAMPLE_DIR="$(realpath "$1")"
+			break
+			;;
+	esac
+	shift
+done
+
+
+
+if [ -z "${EXAMPLE_DIR+'x'}" ]; then
+	stderr "Missing 1 argument: DIRECTORY\n"
+	help
+	exit 1
+fi
+
+
+! test -d "$EXAMPLE_DIR" && reportError 1 "'$(realpath --relative-base "$PWD" "$EXAMPLE_DIR")' not found!"
+
+TMUX_CONF="$EXAMPLE_DIR/tmux.conf"
+SETUP_EXEC="$EXAMPLE_DIR/setup"
+
+! test -f "$TMUX_CONF" && reportError 1 "'$(realpath --relative-base "$PWD" "$TMUX_CONF")' not found!"
+! test -e "$SETUP_EXEC" && reportError 1 "'$(realpath --relative-base "$PWD" "$SETUP_EXEC")' cannot be executed. Either invalid perssions or not found."
+
+
+
+if [ -n "${TMUX+'x'}" ]; then
+	unset TMUX
+fi
+
+SOCKET="tmux-demo.sock"
+SESSION_NAME="demo"
+
+TMUXBIN="$(command -v tmux)"
+tmux() {
+	"$TMUXBIN" -L "$SOCKET" "$@"
+}
+
+unset SHLVL # Reset shell level.
+
+# Overridde prompt to a shorter prompt. This requires additional configuration in .bashrc .zshrc or similar file.
+PS1_OVERRIDE='%B%(!.%F{red}.%F{green})>%b%u%s%f '
+export PS1_OVERRIDE
+
+
+cleanupTmux() { tmux kill-server 2>/dev/null || true; }
+trap 'cleanupTmux; trap - EXIT' EXIT INT HUP TERM
+
+cd "$EXAMPLE_DIR"
+
+tmux -f "$TMUX_CONF" new -s "$SESSION_NAME" -d -x "$(tput lines)" -y "$(tput cols)"
+
+TMUX="$(tmux display -p '#{socket_path},#{pid},#{s/\$//:#{session_id}}')"
+export TMUX
+
+"$SETUP_EXEC"
+
+tmux a -t "$SESSION_NAME"
