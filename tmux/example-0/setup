@@ -7,17 +7,18 @@ P_0_2="$(tmux split -P)"
 
 (
 tmux resizep -t "$P_0_1" -D 1
+tmux clock -t "$P_0_2"
 
 sleep "$DELAY"
-tmux send -t "$P_0_0" 'while printf "\033[H\033[0J%s" "$(fortune -s | fold -w "$COLUMNS" --space | lolcat -f)"; do sleep 7; done' enter
+tmux send -t "$P_0_0" 'while printf "\033[H\033[0J%s" "$(cowsay -f tux tmux is truly awsome | lolcat --seed "$(date +"%s")" -f)"; do sleep 2; done' enter
 
 
-tmux send -t "$P_0_1" 'while printf "\033[H\033[0J%s" "$(cowsay "Hello tmux" | lolcat -f --seed "$(date +"%s%N")")"; do sleep 3; done' enter
+tmux send -t "$P_0_1" 'while printf "\033[H\033[0J%s" "$(cowsay "Hello tmux" | lolcat --seed "$(date +"%s")" -f)"; do sleep 2; done' enter
 
 P_1_0="$(tmux new-window -Pd)"
 
 sleep "$DELAY"
-tmux send -t "$P_1_0" "figlet Hello World | lolcat" enter
+tmux send -t "$P_1_0" "figlet -ct Hello World | lolcat" enter
 
 sleep "$DELAY"
 tmux send -t "$P_1_0" "cowsay tmux is truly awsome | lolcat" enter
