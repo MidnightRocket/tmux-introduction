@@ -75,7 +75,7 @@ trap 'cleanupTmux; trap - EXIT' EXIT INT HUP TERM
 
 cd "$EXAMPLE_DIR"
 
-TMUX="$(tmux -f "$TMUX_CONF" new -s "$SESSION_NAME" -d -x "$(tput cols)" -y "$(tput lines)" -PF '#{socket_path},#{pid},#{s/\$//:#{session_id}}')"
+TMUX="$(tmux -f "$TMUX_CONF" new -s "$SESSION_NAME" -d -x "$(tput cols)" -y "$(tput lines)" -PF '#{socket_path},#{pid},#{s/^\$//:#{session_id}}')"
 export TMUX
 
 "$SETUP_EXEC"
