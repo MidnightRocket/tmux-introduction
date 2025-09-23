@@ -1,3 +1,26 @@
 #!/bin/sh
-tmux split -h
-tmux split
+DELAY="0.4"
+
+P_0_0="$(tmux display -p '#{pane_id}')"
+P_0_1="$(tmux split -hP)"
+P_0_2="$(tmux split -P)"
+
+(
+tmux resizep -t "$P_0_1" -D 1
+
+sleep "$DELAY"
+tmux send -t "$P_0_0" 'while printf "\033[H\033[0J%s" "$(fortune -s | fold -w "$COLUMNS" --space | lolcat -f)"; do sleep 7; done' enter
+
+
+tmux send -t "$P_0_1" 'while printf "\033[H\033[0J%s" "$(cowsay "Hello tmux" | lolcat -f --seed "$(date +"%s%N")")"; do sleep 3; done' enter
+
+P_1_0="$(tmux new-window -Pd)"
+
+sleep "$DELAY"
+tmux send -t "$P_1_0" "figlet Hello World | lolcat" enter
+
+sleep "$DELAY"
+tmux send -t "$P_1_0" "cowsay tmux is truly awsome | lolcat" enter
+
+P_2_0="$(tmux new-window -Pd)"
+) &
