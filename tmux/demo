@@ -52,9 +52,8 @@ SETUP_EXEC="$EXAMPLE_DIR/setup"
 
 
 
-if [ -n "${TMUX+'x'}" ]; then
-	unset TMUX
-fi
+test -n "${TMUX+'x'}" && unset TMUX
+
 
 SOCKET="tmux-demo.sock"
 SESSION_NAME="demo"
@@ -64,11 +63,11 @@ tmux() {
 	"$TMUXBIN" -L "$SOCKET" "$@"
 }
 
-unset SHLVL # Reset shell level.
 
 # Overridde prompt to a shorter prompt. This requires additional configuration in .bashrc .zshrc or similar file.
-PS1_OVERRIDE='%B%(!.%F{red}.%F{green})>%b%u%s%f '
+PS1_OVERRIDE='%B%(?.%F{green}.%F{red}%?-)%(!.#.>)%b%u%s%f '
 export PS1_OVERRIDE
+unset SHLVL # Reset shell level.
 
 
 cleanupTmux() { tmux kill-server 2>/dev/null || true; }
@@ -76,11 +75,9 @@ trap 'cleanupTmux; trap - EXIT' EXIT INT HUP TERM
 
 cd "$EXAMPLE_DIR"
 
-tmux -f "$TMUX_CONF" new -s "$SESSION_NAME" -d -x "$(tput lines)" -y "$(tput cols)"
-
-TMUX="$(tmux display -p '#{socket_path},#{pid},#{s/\$//:#{session_id}}')"
+TMUX="$(tmux -f "$TMUX_CONF" new -s "$SESSION_NAME" -d -x "$(tput cols)" -y "$(tput lines)" -PF '#{socket_path},#{pid},#{s/\$//:#{session_id}}')"
 export TMUX
 
 "$SETUP_EXEC"
 
-tmux a -t "$SESSION_NAME"
+tmux attach -t "$SESSION_NAME"
