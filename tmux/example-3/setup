@@ -1,0 +1,15 @@
+#!/bin/sh
+DELAY="0.5"
+
+P_0_0="$(tmux display -p '#{pane_id}')"
+P_0_1="$(tmux split -hP)"
+P_0_2="$(tmux split -P)"
+
+(
+
+sleep "$DELAY"
+
+P_1_0="$(tmux new-window -Pd)"
+
+P_2_0="$(tmux new-window -Pd)"
+) &

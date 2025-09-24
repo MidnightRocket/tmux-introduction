@@ -61,6 +61,18 @@ What is <span class="tmux">tmux</span>?
 ./tmux/demo tmux/example-1
 ```
 
+<!-- 
+speaker_note: |
+  split
+  split -h
+  show pane numbers
+  new window
+
+  : new
+  tmux ls
+
+  session are like workspaces. 
+-->
 
 <!-- end_slide -->
 
@@ -70,14 +82,17 @@ What is <span class="tmux">tmux</span>?
 > tmux is keyboard centric.
 > Everything can be done using just the keyboard!
 
+
+> Keyboard shortcuts work differently from GUI apps
 <!-- pause -->
+
 
 - Prefix key (C-b)
 - Commands are given as sequences
 
 <!-- pause -->
 ```sh +exec +acquire_terminal
-./tmux/demo tmux/example-3
+./tmux/demo tmux/example-2
 ```
 
 <!-- end_slide -->
@@ -85,13 +100,13 @@ What is <span class="tmux">tmux</span>?
 
 Persistence
 ===
-> tmux is driven by client server architecture
+> tmux is driven by a client-server architecture
 
 <!-- pause -->
 
 - Useful for SSH
 - Session survive even if terminal emulator crashes
-- Even loggin out/in
+- Even logging out/in
 
 <!-- pause -->
 ```sh +exec +acquire_terminal
@@ -101,6 +116,28 @@ Persistence
 /// export PS1_OVERRIDE
 $SHELL
 ```
+<!-- 
+speaker_note: |
+  client-server arch gives persistence.
+
+  tmux ls
+  tmux attach
+  show internet interrupt
+  tmux re-attach
+
+  Work setup persisted.
+  Can log in from different devices.
+-->
+<!-- end_slide -->
+
+More Awsome <span class="tmux">tmux</span>
+===
+- Synchronized panes
+
+<!-- pause -->
+```sh +exec +acquire_terminal
+./tmux/demo tmux/example-3
+```
 
 <!-- end_slide -->
 
@@ -108,4 +145,7 @@ $SHELL
 Resources
 ===
 
+- [this presentation](https://github.com/MidnightRocket/tmux-introduction)
+- [my-tmux-conf](https://github.com/MidnightRocket/my-tmux-conf)
 - [awesome-tmux](https://github.com/rothgar/awesome-tmux)
+- [tmate](https://github.com/tmate-io/tmate)
