@@ -1,0 +1,2 @@
+#!/bin/sh
+while printf "\033[H\033[0J%s" "$(cowsay "Hello tmux" | lolcat --seed "$(date +"%s")" -f)"; do sleep 2; done

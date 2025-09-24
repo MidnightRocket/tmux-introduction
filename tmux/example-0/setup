@@ -1,5 +1,5 @@
 #!/bin/sh
-DELAY="0.4"
+DELAY="0.5"
 
 P_0_0="$(tmux display -p '#{pane_id}')"
 P_0_1="$(tmux split -hP)"
@@ -10,13 +10,14 @@ tmux resizep -t "$P_0_1" -D 1
 tmux clock -t "$P_0_2"
 
 sleep "$DELAY"
-tmux send -t "$P_0_0" 'while printf "\033[H\033[0J%s" "$(cowsay -f tux tmux is truly awsome | lolcat --seed "$(date +"%s")" -f)"; do sleep 2; done' enter
+tmux send -t "$P_0_0" './hello-tux' enter
 
 
-tmux send -t "$P_0_1" 'while printf "\033[H\033[0J%s" "$(cowsay "Hello tmux" | lolcat --seed "$(date +"%s")" -f)"; do sleep 2; done' enter
+tmux send -t "$P_0_1" './hello-cow' enter
 
 P_1_0="$(tmux new-window -Pd)"
 
+sleep "$DELAY"
 sleep "$DELAY"
 tmux send -t "$P_1_0" "figlet -ct Hello World | lolcat" enter
 
