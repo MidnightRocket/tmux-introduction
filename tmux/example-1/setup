@@ -1,1 +1,8 @@
 #!/bin/sh
+
+(
+P_1_0="$(tmux new-window -Pd)"
+
+P_1_1="$(tmux split -t "$P_1_0" -hP)"
+P_1_2="$(tmux split -t "$P_1_1" -P)"
+) &

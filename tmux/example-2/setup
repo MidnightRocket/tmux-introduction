@@ -1,4 +1,2 @@
 #!/bin/sh
 
-tmux split -h
-tmux split

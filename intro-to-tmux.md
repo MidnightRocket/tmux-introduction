@@ -50,7 +50,7 @@ What is <span class="tmux">tmux</span>?
 ```
 
 <!-- end_slide -->
-<span class="tmux">tmux</span> basics
+<span class="tmux">tmux</span> structure
 ===
 - Sessions
 - Windows
@@ -95,9 +95,16 @@ speaker_note: |
 ./tmux/demo tmux/example-2
 ```
 
+<!-- 
+speaker_note: |
+  prefix key
+  prefix mode
+
+  Show zoom
+-->
+
+
 <!-- end_slide -->
-
-
 Persistence
 ===
 > tmux is driven by a client-server architecture
@@ -130,22 +137,46 @@ speaker_note: |
 -->
 <!-- end_slide -->
 
-More Awsome <span class="tmux">tmux</span>
+<span class="tmux">tmux</span> synchronized panes
 ===
-- Synchronized panes
+> tmux can mirror input to multiple shells at a time
 
 <!-- pause -->
 ```sh +exec +acquire_terminal
 ./tmux/demo tmux/example-3
 ```
 
+<!-- 
+speaker_note: |
+  :set synchronize-panes
+-->
+
 <!-- end_slide -->
 
 
+
+<span class="tmux">tmux</span> is awesome!
+===
+
+- Highly customizable
+- Very scriptable
+- Fully open-source (BSD license)
+- Plat form agonistic (Linux/MacOS)
+- Works over SSH
+- Persistent session
+
+
+<!-- 
+speaker_note: |
+  Demo setups are automated with shell scripts
+-->
+
+<!-- end_slide -->
 Resources
 ===
 
-- [this presentation](https://github.com/MidnightRocket/tmux-introduction)
+- [tmux wiki](https://github.com/tmux/tmux/wiki)
+- [This presentation](https://github.com/MidnightRocket/tmux-introduction)
 - [my-tmux-conf](https://github.com/MidnightRocket/my-tmux-conf)
 - [awesome-tmux](https://github.com/rothgar/awesome-tmux)
 - [tmate](https://github.com/tmate-io/tmate)
