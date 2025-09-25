@@ -101,6 +101,9 @@ speaker_note: |
   prefix mode
 
   Show zoom
+
+  Show tmux command line
+  Running tmux commands inside shell
 -->
 
 

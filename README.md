@@ -21,3 +21,7 @@ To allow for code execution which is required to run the demos use:
 # Demos
 These demos are self contained and isolated from any default tmux server & sessions running on the host. 
 To run them, at least tmux most be installed. 
+
+
+# Good starter configuration
+For at good starter configuration see [`tmux/example-2/tmux.conf`](tmux/example-2/tmux.conf)
